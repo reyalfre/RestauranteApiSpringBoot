@@ -12,10 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class ReservaService implements IReservaService {
     private static final Logger log = LoggerFactory.getLogger(ReservaService.class);
-    private static ConcurrentHashMap<String, Reserva> datosReservaPorMesa=new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, Reserva> datosReservaPorMesa = new ConcurrentHashMap<>();
+
     @Override
     public void generarReservaFake() {
-        Reserva reservaFake = new Reserva(1L,new Mesa(1L, 4),1,1,2,4);
+        Reserva reservaFake = new Reserva(1L, new Mesa(1L, 4), 1, 1, 2, 4);
         datosReservaPorMesa.put(String.valueOf(reservaFake.getId()), reservaFake);
     }
 
@@ -26,10 +27,10 @@ public class ReservaService implements IReservaService {
 
     @Override
     public boolean nueva(Reserva nuevoRegistro) {
-        Reserva reserva= new Reserva(1L,new Mesa(1L, 4),1,1,2,4);
+        Reserva reserva = new Reserva(1L, new Mesa(1L, 4), 1, 1, 2, 4);
         //Cuidado(puse un cast porque no sé que poner en reserva.get)
         datosReservaPorMesa.put(String.valueOf(reserva.getId()), nuevoRegistro);
-        log.info("Insertada nueva reserva "+ reserva.getId());
+        log.info("Insertada nueva reserva " + reserva.getId());
         log.info("PROBANDO LOG!!");
         return true;
     }
@@ -37,5 +38,22 @@ public class ReservaService implements IReservaService {
     @Override
     public Reserva reservaPorMesa(String reserva) {
         return datosReservaPorMesa.get(reserva);
+    }
+
+
+    //Agregados de mi api
+    @Override
+    public boolean eliminarReserva(String reserva) {
+        Reserva removed = datosReservaPorMesa.remove(reserva);
+        return removed != null;
+    }
+
+    @Override
+    public boolean actualizarPorReserva(String reserva, Reserva reservaActualizada) {
+        if (datosReservaPorMesa.containsKey(reserva)) {
+            datosReservaPorMesa.put(reserva, reservaActualizada);
+            return true; //Actualización exitosa
+        }
+        return false;//La reserva no existe, actualización no exitosa
     }
 }
