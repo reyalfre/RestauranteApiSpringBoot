@@ -1,19 +1,19 @@
 package com.alfredo.restaurantefour.model;
 
 public class Mesa {
-    private Long id;
+    private int id;
     private int capacidad;
 
-    public Mesa(Long id, int capacidad) {
+    public Mesa(int id, int capacidad) {
         this.id = id;
         this.capacidad = capacidad;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

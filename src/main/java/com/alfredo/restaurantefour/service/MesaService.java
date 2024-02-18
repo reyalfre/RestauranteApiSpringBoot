@@ -19,7 +19,7 @@ public class MesaService implements IMesaService {
 
     @Override
     public boolean nueva(Mesa nuevoRegistro) {
-        Mesa mesa = new Mesa(2L, 5);
+        Mesa mesa = new Mesa(2, 5);
         datosDeMesa.put(String.valueOf(mesa.getId()), nuevoRegistro);
         log.info("Insertada nueva mesa " + mesa.getId());
         log.info("PROBANDO LOG!!");

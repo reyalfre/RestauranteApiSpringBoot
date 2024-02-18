@@ -16,7 +16,7 @@ public class ReservaService implements IReservaService {
 
     @Override
     public void generarReservaFake() {
-        Reserva reservaFake = new Reserva(1L, new Mesa(1L, 4), 1, 1, 2, 4);
+        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2, 4);
         datosReservaPorMesa.put(String.valueOf(reservaFake.getId()), reservaFake);
     }
 
@@ -27,7 +27,7 @@ public class ReservaService implements IReservaService {
 
     @Override
     public boolean nueva(Reserva nuevoRegistro) {
-        Reserva reserva = new Reserva(1L, new Mesa(1L, 4), 1, 1, 2, 4);
+        Reserva reserva = new Reserva(1, 1, 1, 1, 2, 4);
         //Cuidado(puse un cast porque no sé que poner en reserva.get)
         datosReservaPorMesa.put(String.valueOf(reserva.getId()), nuevoRegistro);
         log.info("Insertada nueva reserva " + reserva.getId());

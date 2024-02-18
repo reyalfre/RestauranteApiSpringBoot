@@ -44,7 +44,7 @@ public class ReservaController {
     public ResponseEntity<Void> actualizarReserva(@PathVariable String id, @RequestBody Reserva reserva){
         boolean actualizacionExitosa = reservaService.actualizarPorReserva(id, reserva);
         if (actualizacionExitosa){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -53,7 +53,7 @@ public class ReservaController {
     public ResponseEntity<Void> eliminarPorReserva(@PathVariable String id){
         boolean eliminado = reservaService.eliminarReserva(id);
         if (eliminado){
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

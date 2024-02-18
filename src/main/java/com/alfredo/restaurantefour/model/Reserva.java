@@ -1,8 +1,8 @@
 package com.alfredo.restaurantefour.model;
 
 public class Reserva {
-    private Long id;
-    private Mesa mesa;
+    private int id;
+    private int mesa;
     private int dia;
     private int horaInicio;
     private int horaFin;
@@ -11,7 +11,7 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(Long id, Mesa mesa, int dia, int horaInicio, int horaFin, int numeroComensales) {
+    public Reserva(int id, int mesa, int dia, int horaInicio, int horaFin, int numeroComensales) {
         this.id = id;
         this.mesa = mesa;
         this.dia = dia;
@@ -20,19 +20,19 @@ public class Reserva {
         this.numeroComensales = numeroComensales;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Mesa getMesa() {
+    public int getMesa() {
         return mesa;
     }
 
-    public void setMesa(Mesa mesa) {
+    public void setMesa(int mesa) {
         this.mesa = mesa;
     }
 

@@ -44,7 +44,7 @@ public class MesaController {
     public ResponseEntity<Void> actualizarMesa(@PathVariable String id, @RequestBody Mesa mesa) {
         boolean actualizacionExitosa = mesaService.actualizarPorMesa(id, mesa);
         if (actualizacionExitosa) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -54,7 +54,7 @@ public class MesaController {
     public ResponseEntity<Void> eliminarPorReserva(@PathVariable String id) {
         boolean eliminado = mesaService.eliminarMesa(id);
         if (eliminado) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
