@@ -36,7 +36,7 @@ public class ReservaController {
     public ResponseEntity<Reserva> getByReserva(@PathVariable Integer id) {
         Reserva reserva = reservaService.reservaPorMesa(id);
         if (reserva == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(reserva, HttpStatus.OK);
     }
