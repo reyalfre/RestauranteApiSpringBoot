@@ -31,8 +31,34 @@ public class ReservaService implements IReservaService {
     }
 
     @Override
-    public boolean nueva(Reserva nuevoRegistro) {
-        Integer mesaId = nuevoRegistro.getMesa();
+    public boolean nueva(Reserva nuevaReserva) {
+        Integer mesaId = nuevaReserva.getMesa();
+
+        // Verificar si la mesa con el ID dado existe en el MesaService
+        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
+        if (mesaAsociada == null) {
+            // La mesa no existe, no se puede agregar la reserva
+            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
+            return false;
+        }
+
+        // Verificar si ya existe una reserva para la misma mesa, día y hora
+        for (Reserva reservaExistente : datosReservaPorMesa.values()) {
+            if (reservaExistente.getMesa().equals(nuevaReserva.getMesa()) &&
+                    reservaExistente.getDia() == nuevaReserva.getDia() &&
+                    reservaExistente.getHoraInicio() == nuevaReserva.getHoraInicio()) {
+                // Si hay una reserva existente para la misma mesa, día y hora, no se puede agregar la nueva reserva
+                log.error("Ya existe una reserva para la misma mesa, día y hora. No se pudo agregar la nueva reserva.");
+                return false;
+            }
+        }
+
+        // Si no se encontraron reservas conflictivas, asignamos un ID único a la nueva reserva
+        nuevaReserva.setId(nextId++);
+        datosReservaPorMesa.put(nuevaReserva.getId(), nuevaReserva);
+        log.info("Insertada nueva reserva " + nuevaReserva.getId() + " para la mesa " + mesaId);
+        return true;
+        /*Integer mesaId = nuevoRegistro.getMesa();
         // Verificar si la mesa con el ID dado existe en el MesaService
         Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
         if (mesaAsociada != null) {
@@ -45,7 +71,7 @@ public class ReservaService implements IReservaService {
             // La mesa no existe, no podemos agregar la reserva
             log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
             return false;
-        }
+        }*/
        /* Integer mesaId = nuevoRegistro.getMesa();
         // Verificar si la mesa con el ID dado existe en el MesaService
         Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
