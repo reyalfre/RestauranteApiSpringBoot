@@ -60,6 +60,16 @@ public class ReservaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("hoy")
+    public ResponseEntity<Collection<Reserva>> reservasDelDia() {
+        Collection<Reserva> reservasHoy = reservaService.reservasDelDia();
+        if (reservasHoy.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(reservasHoy, HttpStatus.OK);
+        }
+    }
+
 
 
 }

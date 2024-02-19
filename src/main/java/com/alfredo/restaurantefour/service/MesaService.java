@@ -1,12 +1,16 @@
 package com.alfredo.restaurantefour.service;
 
 import com.alfredo.restaurantefour.model.Mesa;
+import com.alfredo.restaurantefour.model.Reserva;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.alfredo.restaurantefour.service.ReservaService.datosReservaPorMesa;
 
 @Service
 public class MesaService implements IMesaService {
@@ -109,4 +113,43 @@ public class MesaService implements IMesaService {
         }
         return false;*/
     }
+
+    @Override
+    public Collection<Mesa> mesasDisponibles(int dia, int horaInicio, int horaFin) {
+        Collection<Mesa> mesasDisponibles = new ArrayList<>();
+        // Obtener las reservas para el día y franja horaria especificados
+        Collection<Reserva> reservas = obtenerReservasParaDiaYHora(dia, horaInicio, horaFin);
+
+        // Iterar sobre todas las mesas y agregar aquellas que no tengan reservas en la franja horaria especificada
+        for (Mesa mesa : datosDeMesa.values()) {
+            boolean mesaDisponible = true;
+            for (Reserva reserva : reservas) {
+                if (reserva.getMesa().equals(mesa.getId())) {
+                    mesaDisponible = false;
+                    break;
+                }
+            }
+            if (mesaDisponible) {
+                mesasDisponibles.add(mesa);
+            }
+        }
+
+        return mesasDisponibles;
+    }
+
+    private Collection<Reserva> obtenerReservasParaDiaYHora(int dia, int horaInicio, int horaFin) {
+        Collection<Reserva> reservasParaDiaYHora = new ArrayList<>();
+
+        for (Reserva reserva : datosReservaPorMesa.values()) {
+            // Verificar si la reserva es para el día y la franja horaria especificada
+            if (reserva.getDia() == dia &&
+                    reserva.getHoraInicio() >= horaInicio &&
+                    reserva.getHoraFin() <= horaFin) {
+                reservasParaDiaYHora.add(reserva);
+            }
+        }
+
+        return reservasParaDiaYHora;
+    }
+
 }

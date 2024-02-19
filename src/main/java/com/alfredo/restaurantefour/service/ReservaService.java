@@ -4,8 +4,11 @@ import com.alfredo.restaurantefour.model.Mesa;
 import com.alfredo.restaurantefour.model.Reserva;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,5 +127,19 @@ public class ReservaService implements IReservaService {
             return true; //Actualización exitosa
         }
         return false;//La reserva no existe, actualización no exitosa
+    }
+
+    @Override
+    public Collection<Reserva> reservasDelDia() {
+        LocalDate fechaHoy = LocalDate.now();
+        Collection<Reserva> reservasHoy = new ArrayList<>();
+
+        for (Reserva reserva : datosReservaPorMesa.values()) {
+            if (reserva.getDia() == fechaHoy.getDayOfMonth()) {
+                reservasHoy.add(reserva);
+            }
+        }
+
+        return reservasHoy;
     }
 }

@@ -59,4 +59,18 @@ public class MesaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("disponibles")
+    public ResponseEntity<Collection<Mesa>> mesasDisponibles(
+            @RequestParam int dia,
+            @RequestParam int horaInicio,
+            @RequestParam int horaFin) {
+        Collection<Mesa> mesasDisponibles = mesaService.mesasDisponibles(dia, horaInicio, horaFin);
+        if (mesasDisponibles.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(mesasDisponibles, HttpStatus.OK);
+        }
+    }
+
+
 }
