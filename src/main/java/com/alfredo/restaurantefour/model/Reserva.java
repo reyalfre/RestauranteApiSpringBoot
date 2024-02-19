@@ -2,7 +2,7 @@ package com.alfredo.restaurantefour.model;
 
 public class Reserva {
     private int id;
-    private int mesa;
+    private Integer mesa;
     private int dia;
     private int horaInicio;
     private int horaFin;
@@ -28,11 +28,11 @@ public class Reserva {
         this.id = id;
     }
 
-    public int getMesa() {
+    public Integer getMesa() {
         return mesa;
     }
 
-    public void setMesa(int mesa) {
+    public void setMesa(Integer mesa) {
         this.mesa = mesa;
     }
 

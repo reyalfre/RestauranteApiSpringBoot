@@ -9,9 +9,9 @@ public interface IMesaService {
 
     public boolean nueva(Mesa nuevoRegistro);
 
-    public Mesa mesita(String mesa);
+    public Mesa mesita(Integer mesa);
 
-    public boolean eliminarMesa(String mesa);
+    public boolean eliminarMesa(Integer mesa);
 
-    public boolean actualizarPorMesa(String mesa, Mesa mesaActualizada);
+    public boolean actualizarPorMesa(Integer mesa, Mesa mesaActualizada);
 }

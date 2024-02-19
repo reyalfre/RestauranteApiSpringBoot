@@ -32,7 +32,7 @@ public class MesaController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Mesa> getByMesa(@PathVariable String id) {
+    public ResponseEntity<Mesa> getByMesa(@PathVariable Integer id) {
         Mesa mesa = mesaService.mesita(id);
         if (mesa == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,7 +41,7 @@ public class MesaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> actualizarMesa(@PathVariable String id, @RequestBody Mesa mesa) {
+    public ResponseEntity<Void> actualizarMesa(@PathVariable Integer id, @RequestBody Mesa mesa) {
         boolean actualizacionExitosa = mesaService.actualizarPorMesa(id, mesa);
         if (actualizacionExitosa) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -51,7 +51,7 @@ public class MesaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> eliminarPorReserva(@PathVariable String id) {
+    public ResponseEntity<Void> eliminarPorReserva(@PathVariable Integer id) {
         boolean eliminado = mesaService.eliminarMesa(id);
         if (eliminado) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

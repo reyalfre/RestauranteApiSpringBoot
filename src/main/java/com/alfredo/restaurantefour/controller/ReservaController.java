@@ -33,32 +33,33 @@ public class ReservaController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Reserva> getByReserva(@PathVariable String id) {
+    public ResponseEntity<Reserva> getByReserva(@PathVariable Integer id) {
         Reserva reserva = reservaService.reservaPorMesa(id);
         if (reserva == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(reserva, HttpStatus.OK);
     }
+
     @PutMapping("{id}")
-    public ResponseEntity<Void> actualizarReserva(@PathVariable String id, @RequestBody Reserva reserva){
+    public ResponseEntity<Void> actualizarReserva(@PathVariable Integer id, @RequestBody Reserva reserva) {
         boolean actualizacionExitosa = reservaService.actualizarPorReserva(id, reserva);
-        if (actualizacionExitosa){
+        if (actualizacionExitosa) {
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> eliminarPorReserva(@PathVariable String id){
-        boolean eliminado = reservaService.eliminarReserva(id);
-        if (eliminado){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> eliminarPorReserva(@PathVariable Integer id) {
+        boolean eliminado = reservaService.eliminarReserva(id);
+        if (eliminado) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 }
