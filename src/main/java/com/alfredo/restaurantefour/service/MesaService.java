@@ -29,10 +29,21 @@ public class MesaService implements IMesaService {
             log.error("La capacidad de la mesa está fuera del rango permitido (1-8). No se pudo agregar la mesa.");
             return false;
         }
+        // Verificar si al agregar la nueva mesa se excede el aforo máximo de 30 personas
+        int capacidadTotalActual = 0;
+        for (Mesa mesa : datosDeMesa.values()) {
+            capacidadTotalActual += mesa.getCapacidad();
+        }
+        System.out.println(capacidadTotalActual);
+
+        capacidadTotalActual += nuevoRegistro.getCapacidad();
+        if (capacidadTotalActual > 30) {
+            log.error("Al agregar la nueva mesa, se excede el aforo máximo de 30 personas. No se pudo agregar la mesa.");
+            return false;
+        }
         nuevoRegistro.setId(nextId++);
         datosDeMesa.put(nuevoRegistro.getId(), nuevoRegistro);
-        log.info("Insertada nueva mesa " + nuevoRegistro.getId());
-        log.info("PROBANDO LOG!!");
+        log.info("Insertada mesa " + nuevoRegistro.getId()+", con capacidad de "+ nuevoRegistro.getCapacidad()+ " personas y la capacidad actual es de "+capacidadTotalActual);
         return true;
     }
 
