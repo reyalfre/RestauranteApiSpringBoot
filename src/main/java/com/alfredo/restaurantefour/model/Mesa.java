@@ -1,5 +1,8 @@
 package com.alfredo.restaurantefour.model;
 
+/**
+ * Clase modelo: Mesa
+ */
 public class Mesa {
     private int id;
     private int capacidad;

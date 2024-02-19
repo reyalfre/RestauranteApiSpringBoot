@@ -1,5 +1,8 @@
 package com.alfredo.restaurantefour.model;
 
+/**
+ * Clase modelo: Reserva
+ */
 public class Reserva {
     private int id;
     private Integer mesa;
