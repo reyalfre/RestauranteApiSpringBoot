@@ -24,6 +24,11 @@ public class MesaService implements IMesaService {
         log.info("Insertada nueva mesa " + mesa.getId());
         log.info("PROBANDO LOG!!");
         return true;*/
+        int capacidad = nuevoRegistro.getCapacidad();
+        if (capacidad < 1 || capacidad > 8) {
+            log.error("La capacidad de la mesa está fuera del rango permitido (1-8). No se pudo agregar la mesa.");
+            return false;
+        }
         nuevoRegistro.setId(nextId++);
         datosDeMesa.put(nuevoRegistro.getId(), nuevoRegistro);
         log.info("Insertada nueva mesa " + nuevoRegistro.getId());
