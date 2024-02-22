@@ -45,6 +45,22 @@ public class ReservaService implements IReservaService {
             return false;
         }
 
+        // Verificar número de comensales
+        int numeroComensales = nuevaReserva.getNumeroComensales();
+        if (numeroComensales < 1) {
+            // El número de comensales es inválido
+            log.error("El número de comensales (" + numeroComensales + ") es inválido. No se pudo agregar la reserva.");
+            return false;
+        }
+
+        // Verificar capacidad de la mesa
+        int capacidadMesa = mesaAsociada.getCapacidad();
+        if (numeroComensales > capacidadMesa) {
+            // El número de comensales excede la capacidad de la mesa
+            log.error("El número de comensales (" + numeroComensales + ") excede la capacidad de la mesa (" + capacidadMesa + "). No se pudo agregar la reserva.");
+            return false;
+        }
+
         // Verificar si ya existe una reserva para la misma mesa, día y hora
         for (Reserva reservaExistente : datosReservaPorMesa.values()) {
             if (reservaExistente.getMesa().equals(nuevaReserva.getMesa()) &&
@@ -61,50 +77,6 @@ public class ReservaService implements IReservaService {
         datosReservaPorMesa.put(nuevaReserva.getId(), nuevaReserva);
         log.info("Insertada nueva reserva " + nuevaReserva.getId() + " para la mesa " + mesaId);
         return true;
-        /*Integer mesaId = nuevoRegistro.getMesa();
-        // Verificar si la mesa con el ID dado existe en el MesaService
-        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
-        if (mesaAsociada != null) {
-            // La mesa existe, podemos agregar la reserva
-            nuevoRegistro.setId(nextId++);
-            datosReservaPorMesa.put(nuevoRegistro.getId(), nuevoRegistro);
-            log.info("Insertada nueva reserva " + nuevoRegistro.getId() + " para la mesa " + mesaId);
-            return true;
-        } else {
-            // La mesa no existe, no podemos agregar la reserva
-            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
-            return false;
-        }*/
-       /* Integer mesaId = nuevoRegistro.getMesa();
-        // Verificar si la mesa con el ID dado existe en el MesaService
-        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
-        if (mesaAsociada != null) {
-            // La mesa existe, podemos agregar la reserva
-            datosReservaPorMesa.put(nuevoRegistro.getId(), nuevoRegistro);
-            log.info("Insertada nueva reserva " + nuevoRegistro.getId() + " para la mesa " + mesaId);
-            return true;
-        } else {
-            // La mesa no existe, no podemos agregar la reserva
-            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
-            return false;
-        }*/
-        /*if (MesaService.datosDeMesa.containsKey(mesaId)){
-            // La mesa existe, podemos agregar la reserva
-            datosReservaPorMesa.put(nuevoRegistro.getId(), nuevoRegistro);
-            log.info("Insertada nueva reserva " + nuevoRegistro.getId());
-            return true;
-           // datosReservaPorMesa.put(nuevoRegistro);
-        }else {
-            // La mesa no existe, no podemos agregar la reserva
-            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
-            return false;
-        }*/
-        /*Reserva reserva = new Reserva(1, 1, 1, 1, 2, 4);
-        //Cuidado(puse un cast porque no sé que poner en reserva.get)
-        datosReservaPorMesa.put(reserva.getId(), nuevoRegistro);
-        log.info("Insertada nueva reserva " + reserva.getId());
-        log.info("PROBANDO LOG!!");
-        return true;*/
     }
 
     @Override
