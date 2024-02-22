@@ -2,6 +2,7 @@ package com.alfredo.restaurantefour.controller;
 
 import com.alfredo.restaurantefour.model.Mesa;
 import com.alfredo.restaurantefour.service.IMesaService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,13 @@ public class MesaController {
     @Autowired
     public IMesaService mesaService;
 
-   /* @PostMapping
-    public ResponseEntity<Boolean> nuevaInformacionMesa(@RequestBody Mesa info) {
-        mesaService.nueva(info);
-        return new ResponseEntity<>(true, HttpStatus.CREATED);
-    }*/
+    /* @PostMapping
+     public ResponseEntity<Boolean> nuevaInformacionMesa(@RequestBody Mesa info) {
+         mesaService.nueva(info);
+         return new ResponseEntity<>(true, HttpStatus.CREATED);
+     }*/
+    @ApiResponse(responseCode = "201", description = "Table added")
+    @ApiResponse(responseCode = "400", description = "Error: Data invalid")
     @PostMapping
     public ResponseEntity<Boolean> nuevaInformacionMesa(@Valid @RequestBody Mesa info, BindingResult result) {
         if (result.hasErrors()) {
@@ -32,7 +35,8 @@ public class MesaController {
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
-
+    @ApiResponse(responseCode = "200", description = "Data correct")
+    @ApiResponse(responseCode = "204", description = "Error: No content")
     @GetMapping
     public ResponseEntity<Collection<Mesa>> todasMesas() {
         Collection<Mesa> mesas = mesaService.mesaTodas();
@@ -43,6 +47,8 @@ public class MesaController {
         }
     }
 
+    @ApiResponse(responseCode = "200", description = "Data content")
+    @ApiResponse(responseCode = "204", description = "No content")
     @GetMapping("{id}")
     public ResponseEntity<Mesa> getByMesa(@PathVariable Integer id) {
         Mesa mesa = mesaService.mesita(id);
@@ -52,6 +58,9 @@ public class MesaController {
         return new ResponseEntity<>(mesa, HttpStatus.OK);
     }
 
+    @ApiResponse(responseCode = "200", description = "Data found.")
+    @ApiResponse(responseCode = "400", description = "Error: Data invalid.")
+    @ApiResponse(responseCode = "404", description = "Error: Data not found with this ID.")
     @PutMapping("{id}")
     public ResponseEntity<Void> actualizarMesa(@PathVariable Integer id, @RequestBody Mesa mesa, BindingResult result) {
         if (result.hasErrors()) {
@@ -65,6 +74,8 @@ public class MesaController {
         }
     }
 
+    @ApiResponse(responseCode = "204", description = "Delete success with this ID.")
+    @ApiResponse(responseCode = "404", description = "Error: Not Found this ID")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> eliminarPorReserva(@PathVariable Integer id) {
         boolean eliminado = mesaService.eliminarMesa(id);
@@ -74,6 +85,9 @@ public class MesaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @ApiResponse(responseCode = "200", description = "Data found.")
+    @ApiResponse(responseCode = "204", description = "No content.")
     @GetMapping("disponibles")
     public ResponseEntity<Collection<Mesa>> mesasDisponibles(
             @RequestParam int dia,
