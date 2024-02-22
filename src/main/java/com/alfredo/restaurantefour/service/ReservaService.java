@@ -88,8 +88,18 @@ public class ReservaService implements IReservaService {
     //Agregados de mi api
     @Override
     public boolean eliminarReserva(Integer reserva) {
+        /*Reserva removed = datosReservaPorMesa.remove(reserva);
+        return removed != null;*/
+        log.info("Intentando eliminar la reserva con ID: {}", reserva);
+
         Reserva removed = datosReservaPorMesa.remove(reserva);
-        return removed != null;
+        if (removed != null) {
+            log.info("Reserva con ID {} eliminada exitosamente", reserva);
+            return true;
+        } else {
+            log.warn("No se encontró ninguna reserva con el ID {}", reserva);
+            return false;
+        }
     }
 
     /*@Override

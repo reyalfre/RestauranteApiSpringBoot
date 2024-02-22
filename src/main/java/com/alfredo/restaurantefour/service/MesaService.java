@@ -119,7 +119,7 @@ public class MesaService implements IMesaService {
         Collection<Mesa> mesasDisponibles = new ArrayList<>();
         // Obtener las reservas para el día y franja horaria especificados
         Collection<Reserva> reservas = obtenerReservasParaDiaYHora(dia, horaInicio, horaFin);
-
+        log.info("Obteniendo mesas disponibles para el día {} y franja horaria {} - {}", dia, horaInicio, horaFin);
         // Iterar sobre todas las mesas y agregar aquellas que no tengan reservas en la franja horaria especificada
         for (Mesa mesa : datosDeMesa.values()) {
             boolean mesaDisponible = true;
@@ -133,7 +133,7 @@ public class MesaService implements IMesaService {
                 mesasDisponibles.add(mesa);
             }
         }
-
+        log.info("Se encontraron {} mesas disponibles.", mesasDisponibles.size());
         return mesasDisponibles;
     }
 
