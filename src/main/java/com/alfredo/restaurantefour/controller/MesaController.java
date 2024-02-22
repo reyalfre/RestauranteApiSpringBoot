@@ -17,12 +17,6 @@ import java.util.Collection;
 public class MesaController {
     @Autowired
     public IMesaService mesaService;
-
-    /* @PostMapping
-     public ResponseEntity<Boolean> nuevaInformacionMesa(@RequestBody Mesa info) {
-         mesaService.nueva(info);
-         return new ResponseEntity<>(true, HttpStatus.CREATED);
-     }*/
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid")
     @PostMapping

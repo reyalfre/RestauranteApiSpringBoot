@@ -15,6 +15,5 @@ public interface IMesaService {
 
     public boolean actualizarPorMesa(Integer mesa, Mesa mesaActualizada);
 
-    //Consulta especial
     public Collection<Mesa> mesasDisponibles(int dia, int horaInicio, int horaFin);
 }

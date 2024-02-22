@@ -26,28 +26,11 @@ public class MesaService implements IMesaService {
 
     @Override
     public boolean nueva(Mesa nuevoRegistro) {
-        /*Mesa mesa = new Mesa(2, 5);
-        datosDeMesa.put(mesa.getId(), nuevoRegistro);
-        log.info("Insertada nueva mesa " + mesa.getId());
-        log.info("PROBANDO LOG!!");
-        return true;*/
         int capacidad = nuevoRegistro.getCapacidad();
         if (capacidad < 1 || capacidad > 8) {
             log.error("La capacidad de la mesa está fuera del rango permitido (1-8). No se pudo agregar la mesa.");
             return false;
         }
-        /*// Verificar si al agregar la nueva mesa se excede el aforo máximo de 30 personas
-        for (Mesa mesa : datosDeMesa.values()) {
-            capacidadTotalActual += mesa.getCapacidad();
-        }
-
-        System.out.println(capacidadTotalActual+" :1");
-
-        capacidadTotalActual += nuevoRegistro.getCapacidad();
-        if (capacidadTotalActual > 30) {
-            log.error("Al agregar la nueva mesa, se excede el aforo máximo de 30 personas. No se pudo agregar la mesa.");
-            return false;
-        }*/
         // Verificar si al agregar la nueva mesa se excede el aforo máximo de 30 personas
         if (capacidadTotalActual + capacidad > 30) {
             log.error("Al agregar la nueva mesa, se excede el aforo máximo de 30 personas. No se pudo agregar la mesa.");
@@ -106,12 +89,6 @@ public class MesaService implements IMesaService {
 
         log.info("Mesa " + mesa + " actualizada correctamente.");
         return true;
-      /*  //Cuidado
-        if (datosDeMesa.containsKey(mesa)) {
-            datosDeMesa.put(mesa, mesaActualizada);
-            return true;
-        }
-        return false;*/
     }
 
     @Override

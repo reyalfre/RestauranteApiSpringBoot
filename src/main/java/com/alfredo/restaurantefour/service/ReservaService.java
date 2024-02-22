@@ -4,7 +4,6 @@ import com.alfredo.restaurantefour.model.Mesa;
 import com.alfredo.restaurantefour.model.Reserva;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -60,6 +59,16 @@ public class ReservaService implements IReservaService {
             log.error("El número de comensales (" + numeroComensales + ") excede la capacidad de la mesa (" + capacidadMesa + "). No se pudo agregar la reserva.");
             return false;
         }
+        // Validar que la hora de inicio sea menor que la hora final
+        if (nuevaReserva.getHoraInicio() >= nuevaReserva.getHoraFin()) {
+            log.error("La hora de inicio debe ser menor que la hora final.");
+            return false;
+        }
+        // Validar que la duración de la reserva sea de exactamente una hora
+        if (nuevaReserva.getHoraFin() - nuevaReserva.getHoraInicio() != 1) {
+            log.error("La duración de la reserva debe ser de exactamente una hora.");
+            return false;
+        }
 
         // Verificar si ya existe una reserva para la misma mesa, día y hora
         for (Reserva reservaExistente : datosReservaPorMesa.values()) {
@@ -101,15 +110,6 @@ public class ReservaService implements IReservaService {
             return false;
         }
     }
-
-    /*@Override
-    public boolean actualizarPorReserva(Integer reserva, Reserva reservaActualizada) {
-        if (datosReservaPorMesa.containsKey(reserva)) {
-            datosReservaPorMesa.put(reserva, reservaActualizada);
-            return true; //Actualización exitosa
-        }
-        return false;//La reserva no existe, actualización no exitosa
-    }*/
     @Override
     public boolean actualizarPorReserva(Integer idReserva, Reserva reservaActualizada) {
         // Verificar si la reserva que se está actualizando existe
@@ -122,6 +122,11 @@ public class ReservaService implements IReservaService {
         Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
         Integer mesaId = reservaAntesDeActualizar.getMesa();
         Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
+        if (mesaAsociada == null) {
+            // La mesa no existe, no se puede agregar la reserva
+            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
+            return false;
+        }
         int capacidadMesa = mesaAsociada.getCapacidad();
 
         // Verificar número de comensales
@@ -139,7 +144,30 @@ public class ReservaService implements IReservaService {
             return false;
         }
 
-        // Actualizar la reserva en el mapa de datos
+        // Validar que la hora de inicio sea menor que la hora final
+        if (reservaActualizada.getHoraInicio() >= reservaActualizada.getHoraFin()) {
+            log.error("La hora de inicio debe ser menor que la hora final.");
+            return false;
+        }
+
+        // Validar que la duración de la reserva sea de exactamente una hora
+        if (reservaActualizada.getHoraFin() - reservaActualizada.getHoraInicio() != 1) {
+            log.error("La duración de la reserva debe ser de exactamente una hora.");
+            return false;
+        }
+
+        // Verificar si ya existe una reserva para la misma mesa, día y hora
+        for (Reserva reservaExistente : datosReservaPorMesa.values()) {
+            if (reservaExistente.getMesa().equals(reservaActualizada.getMesa()) &&
+                    reservaExistente.getDia() == reservaActualizada.getDia() &&
+                    reservaExistente.getHoraInicio() == reservaActualizada.getHoraInicio()) {
+                // Si hay una reserva existente para la misma mesa, día y hora, no se puede agregar la nueva reserva
+                log.error("Ya existe una reserva para la misma mesa, día y hora. No se pudo agregar la nueva reserva.");
+                return false;
+            }
+        }
+
+        // Si todas las validaciones pasan, actualizar la reserva en el mapa de datos
         datosReservaPorMesa.put(idReserva, reservaActualizada);
         log.info("Reserva con ID " + idReserva + " actualizada correctamente.");
         return true;
