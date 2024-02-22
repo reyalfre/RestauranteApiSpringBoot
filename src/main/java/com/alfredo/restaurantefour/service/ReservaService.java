@@ -92,13 +92,47 @@ public class ReservaService implements IReservaService {
         return removed != null;
     }
 
-    @Override
+    /*@Override
     public boolean actualizarPorReserva(Integer reserva, Reserva reservaActualizada) {
         if (datosReservaPorMesa.containsKey(reserva)) {
             datosReservaPorMesa.put(reserva, reservaActualizada);
             return true; //Actualización exitosa
         }
         return false;//La reserva no existe, actualización no exitosa
+    }*/
+    @Override
+    public boolean actualizarPorReserva(Integer idReserva, Reserva reservaActualizada) {
+        // Verificar si la reserva que se está actualizando existe
+        if (!datosReservaPorMesa.containsKey(idReserva)) {
+            log.error("No se encontró una reserva con el ID " + idReserva + ". No se pudo actualizar la reserva.");
+            return false;
+        }
+
+        // Obtener la reserva antes de la actualización para verificar la mesa asociada y la capacidad actual
+        Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
+        Integer mesaId = reservaAntesDeActualizar.getMesa();
+        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
+        int capacidadMesa = mesaAsociada.getCapacidad();
+
+        // Verificar número de comensales
+        int numeroComensales = reservaActualizada.getNumeroComensales();
+        if (numeroComensales < 1) {
+            // El número de comensales es inválido
+            log.error("El número de comensales (" + numeroComensales + ") es inválido. No se pudo actualizar la reserva.");
+            return false;
+        }
+
+        // Verificar capacidad de la mesa
+        if (numeroComensales > capacidadMesa) {
+            // El número de comensales excede la capacidad de la mesa
+            log.error("El número de comensales (" + numeroComensales + ") excede la capacidad de la mesa (" + capacidadMesa + "). No se pudo actualizar la reserva.");
+            return false;
+        }
+
+        // Actualizar la reserva en el mapa de datos
+        datosReservaPorMesa.put(idReserva, reservaActualizada);
+        log.info("Reserva con ID " + idReserva + " actualizada correctamente.");
+        return true;
     }
 
     @Override
