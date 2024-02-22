@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.alfredo</groupId>
-    <artifactId>RestauranteFour</artifactId>
+    <artifactId>RestauranteApi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>RestauranteFour</name>
-    <description>RestauranteFour</description>
+    <name>RestauranteApi</name>
+    <description>RestauranteApi</description>
     <properties>
         <java.version>17</java.version>
     </properties>
