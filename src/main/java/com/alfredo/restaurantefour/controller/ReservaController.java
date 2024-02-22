@@ -19,11 +19,20 @@ public class ReservaController {
     @ApiResponse(responseCode = "400", description = "Error: Data invalid")
     @PostMapping
     public ResponseEntity<Boolean> nuevaInformacionReserva(@RequestBody Reserva info) {
-        reservaService.nueva(info);
-        return new ResponseEntity<>(true, HttpStatus.CREATED);
+        // Intenta crear la nueva reserva utilizando el servicio
+        boolean creacionExitosa = reservaService.nueva(info);
+
+        // Verifica si la creación de la reserva fue exitosa
+        if (creacionExitosa) {
+            // Si la creación fue exitosa, devuelve un código HttpStatus "CREATED" (201)
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        } else {
+            // Si no se pudo crear la reserva debido a algún error de validación u otro motivo, devuelve un código HttpStatus "BAD REQUEST" (400)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
-    @ApiResponse(responseCode = "201", description = "Ok")
-    @ApiResponse(responseCode = "400", description = "Error: No content")
+    @ApiResponse(responseCode = "200", description = "OK: Data content")
+    @ApiResponse(responseCode = "204", description = "Error: No content")
     @GetMapping
     public ResponseEntity<Collection<Reserva>> todasReservas() {
         Collection<Reserva> reservas = reservaService.reservaTodas();
@@ -33,7 +42,7 @@ public class ReservaController {
             return new ResponseEntity<>(reservas, HttpStatus.OK);
         }
     }
-    @ApiResponse(responseCode = "200", description = "Data content")
+    @ApiResponse(responseCode = "200", description = "OK: Data content")
     @ApiResponse(responseCode = "404", description = "Error: Not Found")
     @GetMapping("{id}")
     public ResponseEntity<Reserva> getByReserva(@PathVariable Integer id) {
@@ -43,7 +52,7 @@ public class ReservaController {
         }
         return new ResponseEntity<>(reserva, HttpStatus.OK);
     }
-    @ApiResponse(responseCode = "200", description = "Data content")
+    @ApiResponse(responseCode = "200", description = "OK: Data content")
     @ApiResponse(responseCode = "400", description = "Error: Not Found")
     @ApiResponse(responseCode = "404", description = "Error: Not Found with this id")
     @ApiResponse(responseCode = "409", description = "Error: Conflict in the hours")
@@ -67,6 +76,8 @@ public class ReservaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @ApiResponse(responseCode = "200", description = "OK: Data found.")
+    @ApiResponse(responseCode = "204", description = "Error: Not content")
     @GetMapping("hoy")
     public ResponseEntity<Collection<Reserva>> reservasDelDia() {
         Collection<Reserva> reservasHoy = reservaService.reservasDelDia();

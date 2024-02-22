@@ -35,7 +35,7 @@ public class MesaController {
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
-    @ApiResponse(responseCode = "200", description = "Data correct")
+    @ApiResponse(responseCode = "200", description = "OK: Data correct")
     @ApiResponse(responseCode = "204", description = "Error: No content")
     @GetMapping
     public ResponseEntity<Collection<Mesa>> todasMesas() {
@@ -47,7 +47,7 @@ public class MesaController {
         }
     }
 
-    @ApiResponse(responseCode = "200", description = "Data content")
+    @ApiResponse(responseCode = "200", description = "OK: Data content")
     @ApiResponse(responseCode = "204", description = "No content")
     @GetMapping("{id}")
     public ResponseEntity<Mesa> getByMesa(@PathVariable Integer id) {
@@ -58,7 +58,7 @@ public class MesaController {
         return new ResponseEntity<>(mesa, HttpStatus.OK);
     }
 
-    @ApiResponse(responseCode = "200", description = "Data found.")
+    @ApiResponse(responseCode = "200", description = "OK: Data found.")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid.")
     @ApiResponse(responseCode = "404", description = "Error: Data not found with this ID.")
     @PutMapping("{id}")
@@ -86,7 +86,7 @@ public class MesaController {
         }
     }
 
-    @ApiResponse(responseCode = "200", description = "Data found.")
+    @ApiResponse(responseCode = "200", description = "OK: Data found.")
     @ApiResponse(responseCode = "204", description = "No content.")
     @GetMapping("disponibles")
     public ResponseEntity<Collection<Mesa>> mesasDisponibles(
