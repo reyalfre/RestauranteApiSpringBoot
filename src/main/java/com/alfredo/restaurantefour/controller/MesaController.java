@@ -23,7 +23,7 @@ public class MesaController {
          mesaService.nueva(info);
          return new ResponseEntity<>(true, HttpStatus.CREATED);
      }*/
-    @ApiResponse(responseCode = "201", description = "Table added")
+    @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid")
     @PostMapping
     public ResponseEntity<Boolean> nuevaInformacionMesa(@Valid @RequestBody Mesa info, BindingResult result) {
