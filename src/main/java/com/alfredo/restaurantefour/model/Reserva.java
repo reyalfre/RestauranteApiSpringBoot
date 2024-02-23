@@ -9,17 +9,32 @@ public class Reserva {
     private int dia;
     private int horaInicio;
     private int horaFin;
+    private String nombre;
+    private String apellido;
+    private String telefono;
     private int numeroComensales;
 
     public Reserva() {
     }
 
-    public Reserva(int id, int mesa, int dia, int horaInicio, int horaFin, int numeroComensales) {
+   /* public Reserva(int id, int mesa, int dia, int horaInicio, int horaFin, int numeroComensales) {
         this.id = id;
         this.mesa = mesa;
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.numeroComensales = numeroComensales;
+    }*/
+
+    public Reserva(int id, Integer mesa, int dia, int horaInicio, int horaFin, String nombre, String apellido, String telefono, int numeroComensales) {
+        this.id = id;
+        this.mesa = mesa;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
         this.numeroComensales = numeroComensales;
     }
 
@@ -61,6 +76,30 @@ public class Reserva {
 
     public void setHoraFin(int horaFin) {
         this.horaFin = horaFin;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public int getNumeroComensales() {

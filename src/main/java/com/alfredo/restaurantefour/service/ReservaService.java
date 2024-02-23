@@ -22,7 +22,7 @@ public class ReservaService implements IReservaService {
     public void generarReservaFake() {
         //MesaService.datosDeMesa
         //if (MesaService.datosDeMesa.containsKey())
-        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2, 4);
+        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2,"","","", 4);
         datosReservaPorMesa.put(reservaFake.getId(), reservaFake);
     }
 
