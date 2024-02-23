@@ -93,12 +93,8 @@ public class ReservaService implements IReservaService {
         return datosReservaPorMesa.get(reserva);
     }
 
-
-    //Agregados de mi api
     @Override
     public boolean eliminarReserva(Integer reserva) {
-        /*Reserva removed = datosReservaPorMesa.remove(reserva);
-        return removed != null;*/
         log.info("Intentando eliminar la reserva con ID: {}", reserva);
 
         Reserva removed = datosReservaPorMesa.remove(reserva);
@@ -110,6 +106,7 @@ public class ReservaService implements IReservaService {
             return false;
         }
     }
+
     @Override
     public boolean actualizarPorReserva(Integer idReserva, Reserva reservaActualizada) {
         // Verificar si la reserva que se está actualizando existe
