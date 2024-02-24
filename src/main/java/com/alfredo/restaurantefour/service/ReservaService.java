@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.alfredo.restaurantefour.service.MesaService.datosDeMesa;
+
 @Service
 public class ReservaService implements IReservaService {
     private static int nextId = 1;
@@ -37,7 +39,7 @@ public class ReservaService implements IReservaService {
         Integer mesaId = nuevaReserva.getMesa();
 
         // Verificar si la mesa con el ID dado existe en el MesaService
-        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
+        Mesa mesaAsociada = datosDeMesa.get(mesaId);
         if (mesaAsociada == null) {
             // La mesa no existe, no se puede agregar la reserva
             log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
@@ -115,16 +117,29 @@ public class ReservaService implements IReservaService {
             return false;
         }
 
+        // Verificar si la mesa asociada a la reserva actualizada existe en el sistema
+        Integer mesaId = reservaActualizada.getMesa();
+        if (mesaId == null || !datosDeMesa.containsKey(mesaId)) {
+            // La mesa no existe o el ID de la mesa es nulo, no se puede actualizar la reserva
+            log.error("La mesa con el ID " + mesaId + " no existe o el ID de la mesa es nulo. No se pudo actualizar la reserva.");
+            return false;
+        }
+
         // Obtener la reserva antes de la actualización para verificar la mesa asociada y la capacidad actual
         Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
-        Integer mesaId = reservaAntesDeActualizar.getMesa();
-        Mesa mesaAsociada = MesaService.datosDeMesa.get(mesaId);
+        Mesa mesaAsociada = datosDeMesa.get(mesaId);
         if (mesaAsociada == null) {
-            // La mesa no existe, no se puede agregar la reserva
-            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
+            // La mesa no existe, no se puede actualizar la reserva
+            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo actualizar la reserva.");
             return false;
         }
         int capacidadMesa = mesaAsociada.getCapacidad();
+        /*if (mesaAsociada == null) {
+            // La mesa no existe, no se puede agregar la reserva
+            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
+            return false;
+        }*/
+        //int capacidadMesa = mesaAsociada.getCapacidad();
 
         // Verificar número de comensales
         int numeroComensales = reservaActualizada.getNumeroComensales();
