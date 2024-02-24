@@ -2,6 +2,7 @@ package com.alfredo.restaurantefour.controller;
 
 import com.alfredo.restaurantefour.model.Mesa;
 import com.alfredo.restaurantefour.service.IMesaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,17 @@ import java.util.Collection;
 public class MesaController {
     @Autowired
     public IMesaService mesaService;
+
+    /**
+     * Método nuevaInformacionReserva: Añadir una nueva mesa.
+     *
+     * @param info
+     * @param result
+     * @return La nueva mesa.
+     */
+    @Operation(
+            summary = "Añadir una nueva mesa",
+            description = "Añade una nueva mesa")
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid")
     @PostMapping
@@ -29,6 +41,14 @@ public class MesaController {
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
+    /**
+     * Método todasMesas: Listar todas las mesas.
+     *
+     * @return 200 o 204.
+     */
+    @Operation(
+            summary = "Listar todas las mesas",
+            description = "Lista todas las mesas que hay actualmente")
     @ApiResponse(responseCode = "200", description = "OK: Data correct")
     @ApiResponse(responseCode = "204", description = "Error: No content")
     @GetMapping
@@ -41,6 +61,15 @@ public class MesaController {
         }
     }
 
+    /**
+     * Método getByMesa: Ver detalles de una mesa específica.
+     *
+     * @param id
+     * @return 200 o 204.
+     */
+    @Operation(
+            summary = "Ver detalles de una mesa específica",
+            description = "Obtiene los detalles de una mesa")
     @ApiResponse(responseCode = "200", description = "OK: Data content")
     @ApiResponse(responseCode = "204", description = "No content")
     @GetMapping("{id}")
@@ -52,6 +81,17 @@ public class MesaController {
         return new ResponseEntity<>(mesa, HttpStatus.OK);
     }
 
+    /**
+     * Método actualizarMesa: Modificar una mesa. Envía los datos y se modificará entera.
+     *
+     * @param id
+     * @param mesa
+     * @param result
+     * @return 200, 400, 404
+     */
+    @Operation(
+            summary = "Modificar una mesa",
+            description = "Modifica una mesa. Envía los datos y se modificará entera.")
     @ApiResponse(responseCode = "200", description = "OK: Data found.")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid.")
     @ApiResponse(responseCode = "404", description = "Error: Data not found with this ID.")
@@ -68,6 +108,15 @@ public class MesaController {
         }
     }
 
+    /**
+     * Método eliminarPorReserva: Eliminar una mesa.
+     *
+     * @param id El id que se va a eliminar
+     * @return 204 o 404
+     */
+    @Operation(
+            summary = "Eliminar una mesa",
+            description = "Elimina una mesa dado por su id")
     @ApiResponse(responseCode = "204", description = "Delete success with this ID.")
     @ApiResponse(responseCode = "404", description = "Error: Not Found this ID")
     @DeleteMapping("{id}")
@@ -80,6 +129,18 @@ public class MesaController {
         }
     }
 
+    /**
+     * Método mesasDisponibles: Consultar mesas disponibles para un día y franja de horas (hora inicio, hora fin). Es
+     * decir, mesas que existan para las cuales no haya reservas en el día y horas solicitadas.
+     *
+     * @param dia
+     * @param horaInicio
+     * @param horaFin
+     * @return Las mesas disponibles
+     */
+    @Operation(
+            summary = "Consultar mesas disponibles para un día y franja de horas",
+            description = "Consultar mesas disponibles para un día y franja de horas (hora inicio, hora fin). Es decir, mesas que existan para las cuales no haya reservas en el día y horas solicitadas.")
     @ApiResponse(responseCode = "200", description = "OK: Data found.")
     @ApiResponse(responseCode = "204", description = "No content.")
     @GetMapping("disponibles")
