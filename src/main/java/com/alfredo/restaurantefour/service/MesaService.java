@@ -19,11 +19,22 @@ public class MesaService implements IMesaService {
     private static final Logger log = LoggerFactory.getLogger(MesaService.class);
     public static ConcurrentHashMap<Integer, Mesa> datosDeMesa = new ConcurrentHashMap<>();
 
+    /**
+     * Método mesaTodas: Lógica para obtener todas las mesas.
+     *
+     * @return Todas las mesas.
+     */
     @Override
     public Collection<Mesa> mesaTodas() {
         return datosDeMesa.values();
     }
 
+    /**
+     * Método nueva: Lógica para crear una nueva.
+     *
+     * @param nuevoRegistro Un nuevo registro.
+     * @return True si se ha creado la mesa. False sino se ha creado la mesa.
+     */
     @Override
     public boolean nueva(Mesa nuevoRegistro) {
         int capacidad = nuevoRegistro.getCapacidad();
@@ -36,32 +47,52 @@ public class MesaService implements IMesaService {
             log.error("Al agregar la nueva mesa, se excede el aforo máximo de 30 personas. No se pudo agregar la mesa.");
             return false;
         }
-        System.out.println(capacidadTotalActual+" :1");
+        System.out.println(capacidadTotalActual + " :1");
         nuevoRegistro.setId(nextId++);
         datosDeMesa.put(nuevoRegistro.getId(), nuevoRegistro);
         capacidadTotalActual += capacidad;
         log.info("Insertada mesa " + nuevoRegistro.getId() + ", con capacidad de " + nuevoRegistro.getCapacidad() + " personas y la capacidad actual es de " + capacidadTotalActual);
-        System.out.println(capacidadTotalActual+" :2");
+        System.out.println(capacidadTotalActual + " :2");
         return true;
     }
 
+    /**
+     * Método mesita: Lógica para obtener una mesa.
+     *
+     * @param mesa El id de la mesa.
+     * @return Una mesa.
+     */
     @Override
     public Mesa mesita(Integer mesa) {
         return datosDeMesa.get(mesa);
     }
 
+    /**
+     * Método eliminarMesa: Lógica para eliminar una mesa.
+     *
+     * @param mesa El id de la mesa.
+     * @return True si se ha borrado la mesa. False sino se ha encontrado la mesa a borrar.
+     */
     @Override
     public boolean eliminarMesa(Integer mesa) {
         Mesa removed = datosDeMesa.remove(mesa);
         if (removed != null) {
             capacidadTotalActual -= removed.getCapacidad();
             log.info("Borrada mesa " + mesa + ", la capacidad actual es de " + capacidadTotalActual);
+            return true;
         } else {
             log.error("No se pudo encontrar la mesa con el ID " + mesa + ". No se pudo eliminar la mesa.");
+            return false;
         }
-        return false;
+
     }
 
+    /**
+     * Método actualizarPorMesa: Lógica para actualizar una reserva.
+     * @param mesa El id de la mesa.
+     * @param mesaActualizada El id a actualizar.
+     * @return True si se ha actualizado la mesa. False sino se ha encontrado/actualizado la mesa.
+     */
     @Override
     public boolean actualizarPorMesa(Integer mesa, Mesa mesaActualizada) {
         // Verificar si la mesa que se está actualizando existe en el mapa de datos
@@ -91,6 +122,13 @@ public class MesaService implements IMesaService {
         return true;
     }
 
+    /**
+     * Método mesasDisponibles: Lógica para obtener las mesas disponible en un día y hora en concreto.
+     * @param dia El día de la reserva a consultar.
+     * @param horaInicio La hora de inicio en la que se inicia la reserva a consultar.
+     * @param horaFin La hora en la que se finaliza la reserva a consultar.
+     * @return Las mesas disponibles en la fecha especificada.
+     */
     @Override
     public Collection<Mesa> mesasDisponibles(int dia, int horaInicio, int horaFin) {
         Collection<Mesa> mesasDisponibles = new ArrayList<>();
@@ -114,6 +152,13 @@ public class MesaService implements IMesaService {
         return mesasDisponibles;
     }
 
+    /**
+     * Verificar si la reserva es para el día y la franja horaria especificada
+     * @param dia El día de la reserva a consultar.
+     * @param horaInicio La hora de inicio en la que se inicia la reserva a consultar.
+     * @param horaFin La hora en la que se finaliza la reserva a consultar.
+     * @return La reserva para el dia y hora especificada.
+     */
     private Collection<Reserva> obtenerReservasParaDiaYHora(int dia, int horaInicio, int horaFin) {
         Collection<Reserva> reservasParaDiaYHora = new ArrayList<>();
 
