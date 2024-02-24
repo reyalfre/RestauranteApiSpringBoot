@@ -23,22 +23,24 @@ public class ReservaService implements IReservaService {
     public void generarReservaFake() {
         //MesaService.datosDeMesa
         //if (MesaService.datosDeMesa.containsKey())
-        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2,"","","", 4);
+        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2, "", "", "", 4);
         datosReservaPorMesa.put(reservaFake.getId(), reservaFake);
     }
 
     /**
      * Método reservaTodas: Lógica para obtener todas las reservas.
+     *
      * @return las reservas.
      */
     @Override
     public Collection<Reserva> reservaTodas() {
-
+        log.info("Obteniendo todas las reservas.");
         return datosReservaPorMesa.values();
     }
 
     /**
      * Método nueva: Lógica para crear una nueva reserva
+     *
      * @param nuevaReserva
      * @return
      */
@@ -100,6 +102,7 @@ public class ReservaService implements IReservaService {
 
     /**
      * Método reservaPorMesa: Lógica para obtener una reserva.
+     *
      * @param reserva El id de la reserva.
      * @return Una reserva.
      */
@@ -110,6 +113,7 @@ public class ReservaService implements IReservaService {
 
     /**
      * Método eliminarReserva: Lógica para eliminar una reserva.
+     *
      * @param reserva El id de la reserva.
      * @return true si se ha eliminado, false sino se ha eliminado.
      */
@@ -129,7 +133,8 @@ public class ReservaService implements IReservaService {
 
     /**
      * Método actualizarPorReserva: Lógica para actualizar una reserva
-     * @param idReserva El id de la reserva.
+     *
+     * @param idReserva          El id de la reserva.
      * @param reservaActualizada La reserva.
      * @return True si se ha actualizado, False si no se ha actualizado.
      */
@@ -211,6 +216,7 @@ public class ReservaService implements IReservaService {
 
     /**
      * Método reservasDelDia: Lógica para obtener las reservas del día actual.
+     *
      * @return Las reservas del día actual.
      */
     @Override

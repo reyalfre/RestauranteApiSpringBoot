@@ -17,15 +17,6 @@ public class Reserva {
     public Reserva() {
     }
 
-   /* public Reserva(int id, int mesa, int dia, int horaInicio, int horaFin, int numeroComensales) {
-        this.id = id;
-        this.mesa = mesa;
-        this.dia = dia;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.numeroComensales = numeroComensales;
-    }*/
-
     public Reserva(int id, Integer mesa, int dia, int horaInicio, int horaFin, String nombre, String apellido, String telefono, int numeroComensales) {
         this.id = id;
         this.mesa = mesa;
