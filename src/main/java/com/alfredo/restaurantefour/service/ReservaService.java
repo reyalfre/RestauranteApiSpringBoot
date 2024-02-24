@@ -16,7 +16,6 @@ import static com.alfredo.restaurantefour.service.MesaService.datosDeMesa;
 @Service
 public class ReservaService implements IReservaService {
     private static int nextId = 1;
-    public MesaService mesaService;
     private static final Logger log = LoggerFactory.getLogger(ReservaService.class);
     public static ConcurrentHashMap<Integer, Reserva> datosReservaPorMesa = new ConcurrentHashMap<>();
 
@@ -28,12 +27,21 @@ public class ReservaService implements IReservaService {
         datosReservaPorMesa.put(reservaFake.getId(), reservaFake);
     }
 
+    /**
+     * Método reservaTodas: Lógica para obtener todas las reservas.
+     * @return las reservas.
+     */
     @Override
     public Collection<Reserva> reservaTodas() {
 
         return datosReservaPorMesa.values();
     }
 
+    /**
+     * Método nueva: Lógica para crear una nueva reserva
+     * @param nuevaReserva
+     * @return
+     */
     @Override
     public boolean nueva(Reserva nuevaReserva) {
         Integer mesaId = nuevaReserva.getMesa();
@@ -90,11 +98,21 @@ public class ReservaService implements IReservaService {
         return true;
     }
 
+    /**
+     * Método reservaPorMesa: Lógica para obtener una reserva.
+     * @param reserva El id de la reserva.
+     * @return Una reserva.
+     */
     @Override
     public Reserva reservaPorMesa(Integer reserva) {
         return datosReservaPorMesa.get(reserva);
     }
 
+    /**
+     * Método eliminarReserva: Lógica para eliminar una reserva.
+     * @param reserva El id de la reserva.
+     * @return true si se ha eliminado, false sino se ha eliminado.
+     */
     @Override
     public boolean eliminarReserva(Integer reserva) {
         log.info("Intentando eliminar la reserva con ID: {}", reserva);
@@ -109,6 +127,12 @@ public class ReservaService implements IReservaService {
         }
     }
 
+    /**
+     * Método actualizarPorReserva: Lógica para actualizar una reserva
+     * @param idReserva El id de la reserva.
+     * @param reservaActualizada La reserva.
+     * @return True si se ha actualizado, False si no se ha actualizado.
+     */
     @Override
     public boolean actualizarPorReserva(Integer idReserva, Reserva reservaActualizada) {
         // Verificar si la reserva que se está actualizando existe
@@ -185,6 +209,10 @@ public class ReservaService implements IReservaService {
         return true;
     }
 
+    /**
+     * Método reservasDelDia: Lógica para obtener las reservas del día actual.
+     * @return Las reservas del día actual.
+     */
     @Override
     public Collection<Reserva> reservasDelDia() {
         LocalDate fechaHoy = LocalDate.now();
