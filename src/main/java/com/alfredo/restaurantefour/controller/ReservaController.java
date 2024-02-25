@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static com.alfredo.restaurantefour.service.ReservaService.datosReservaPorMesa;
+
 @RestController
 @RequestMapping("/reservas")
 public class ReservaController {
@@ -27,6 +29,7 @@ public class ReservaController {
             description = "Crear una nueva reserva")
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Error: Data invalid")
+    @ApiResponse(responseCode = "409", description = "Error: Conflict")
     @PostMapping
     public ResponseEntity<Boolean> nuevaInformacionReserva(@RequestBody Reserva info) {
         // Intenta crear la nueva reserva utilizando el servicio
@@ -37,11 +40,20 @@ public class ReservaController {
             // Si la creación fue exitosa, devuelve un código HttpStatus "CREATED" (201)
             return new ResponseEntity<>(true, HttpStatus.CREATED);
         } else {
-            // Si no se pudo crear la reserva debido a algún error de validación u otro motivo, devuelve un código HttpStatus "BAD REQUEST" (400)
+            // Si no se pudo crear la reserva debido a algún error de validación u otro motivo,
+            // verifica si el motivo del fallo fue un conflicto de disponibilidad (código 409)
+            for (Reserva reservaExistente : datosReservaPorMesa.values()) {
+                if (reservaExistente.getMesa().equals(info.getMesa()) &&
+                        reservaExistente.getDia() == info.getDia() &&
+                        reservaExistente.getHoraInicio() == info.getHoraInicio()) {
+                    // Si hay una reserva existente para la misma mesa, día y hora, devuelve un código HttpStatus "CONFLICT" (409)
+                    return new ResponseEntity<>(HttpStatus.CONFLICT);
+                }
+            }
+            // Si no hay conflicto de disponibilidad, devuelve un código HttpStatus "BAD REQUEST" (400)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
     /**
      * Método todasReservas:  Listar todas las reservas.
      * @return 200 o 204
