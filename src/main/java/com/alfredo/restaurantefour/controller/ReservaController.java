@@ -2,6 +2,7 @@ package com.alfredo.restaurantefour.controller;
 
 import com.alfredo.restaurantefour.model.Reserva;
 import com.alfredo.restaurantefour.service.IReservaService;
+import com.alfredo.restaurantefour.service.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,11 +113,21 @@ public class ReservaController {
     @ApiResponse(responseCode = "409", description = "Error: Conflict in the hours")
     @PutMapping("{id}")
     public ResponseEntity<Void> actualizarReserva(@PathVariable Integer id, @RequestBody Reserva reserva) {
+        // Verificar si el ID de la reserva existe antes de intentar actualizarla
+        if (!ReservaService.existeReserva(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         boolean actualizacionExitosa = reservaService.actualizarPorReserva(id, reserva);
         if (actualizacionExitosa) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            // Verificar si la actualización falló debido a conflicto de horario
+            boolean conflictoHorario = ReservaService.verificarConflictoHorario(reserva);
+            if (conflictoHorario) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
         }
     }
 
@@ -160,6 +171,4 @@ public class ReservaController {
             return new ResponseEntity<>(reservasHoy, HttpStatus.OK);
         }
     }
-
-
 }

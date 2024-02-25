@@ -225,4 +225,22 @@ public class ReservaService implements IReservaService {
 
         return reservasHoy;
     }
+    public static boolean verificarConflictoHorario(Reserva reservaActualizada) {
+        // Verificar que la duración de la reserva sea de exactamente una hora
+        if (reservaActualizada.getHoraFin() - reservaActualizada.getHoraInicio() != 1) {
+            return true; // La duración de la reserva no es de una hora
+        }
+        for (Reserva reservaExistente : datosReservaPorMesa.values()) {
+            if (reservaExistente.getId() != reservaActualizada.getId() &&
+                    reservaExistente.getMesa().equals(reservaActualizada.getMesa()) &&
+                    reservaExistente.getDia() == reservaActualizada.getDia() &&
+                    reservaExistente.getHoraInicio() == reservaActualizada.getHoraInicio()) {
+                return true; // Hay conflicto de horario
+            }
+        }
+        return false; // No hay conflicto de horario
+    }
+    public static boolean existeReserva(Integer idReserva) {
+        return datosReservaPorMesa.containsKey(idReserva);
+    }
 }
