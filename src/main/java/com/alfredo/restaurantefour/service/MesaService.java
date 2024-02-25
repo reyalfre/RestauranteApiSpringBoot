@@ -157,7 +157,7 @@ public class MesaService implements IMesaService {
      * @param dia El día de la reserva a consultar.
      * @param horaInicio La hora de inicio en la que se inicia la reserva a consultar.
      * @param horaFin La hora en la que se finaliza la reserva a consultar.
-     * @return La reserva para el dia y hora especificada.
+     * @return La reserva para el día y hora especificada.
      */
     private Collection<Reserva> obtenerReservasParaDiaYHora(int dia, int horaInicio, int horaFin) {
         Collection<Reserva> reservasParaDiaYHora = new ArrayList<>();

@@ -18,15 +18,6 @@ public class ReservaService implements IReservaService {
     private static int nextId = 1;
     private static final Logger log = LoggerFactory.getLogger(ReservaService.class);
     public static ConcurrentHashMap<Integer, Reserva> datosReservaPorMesa = new ConcurrentHashMap<>();
-
-    @Override
-    public void generarReservaFake() {
-        //MesaService.datosDeMesa
-        //if (MesaService.datosDeMesa.containsKey())
-        Reserva reservaFake = new Reserva(1, 1, 1, 1, 2, "", "", "", 4);
-        datosReservaPorMesa.put(reservaFake.getId(), reservaFake);
-    }
-
     /**
      * Método reservaTodas: Lógica para obtener todas las reservas.
      *
@@ -48,10 +39,9 @@ public class ReservaService implements IReservaService {
     public boolean nueva(Reserva nuevaReserva) {
         Integer mesaId = nuevaReserva.getMesa();
 
-        // Verificar si la mesa con el ID dado existe en el MesaService
+        // Verifica si la mesa con el ID dado existe en el MesaService
         Mesa mesaAsociada = datosDeMesa.get(mesaId);
         if (mesaAsociada == null) {
-            // La mesa no existe, no se puede agregar la reserva
             log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
             return false;
         }
@@ -155,10 +145,8 @@ public class ReservaService implements IReservaService {
         }
 
         // Obtener la reserva antes de la actualización para verificar la mesa asociada y la capacidad actual
-       // Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
         Mesa mesaAsociada = datosDeMesa.get(mesaId);
         if (mesaAsociada == null) {
-            // La mesa no existe, no se puede actualizar la reserva
             log.error("La mesa con el ID " + mesaId + " no existe. No se pudo actualizar la reserva.");
             return false;
         }
@@ -171,14 +159,13 @@ public class ReservaService implements IReservaService {
             return false;
         }
 
-        // Verificar capacidad de la mesa
+        // Verifica la capacidad de la mesa
         if (numeroComensales > capacidadMesa) {
-            // El número de comensales excede la capacidad de la mesa
             log.error("El número de comensales (" + numeroComensales + ") excede la capacidad de la mesa (" + capacidadMesa + "). No se pudo actualizar la reserva.");
             return false;
         }
 
-        // Validar que la hora de inicio sea menor que la hora final
+        // Obligar a que la hora de inicio sea menor que la hora final
         if (reservaActualizada.getHoraInicio() >= reservaActualizada.getHoraFin()) {
             log.error("La hora de inicio debe ser menor que la hora final.");
             return false;
@@ -190,7 +177,7 @@ public class ReservaService implements IReservaService {
             return false;
         }
 
-        // Verificar si ya existe una reserva para la misma mesa, día y hora
+        // El for verifica si ya existe una reserva para la misma mesa, día y hora.
         for (Reserva reservaExistente : datosReservaPorMesa.values()) {
             if (reservaExistente.getMesa().equals(reservaActualizada.getMesa()) &&
                     reservaExistente.getDia() == reservaActualizada.getDia() &&
@@ -201,7 +188,7 @@ public class ReservaService implements IReservaService {
             }
         }
 
-        // Si todas las validaciones pasan, actualizar la reserva en el mapa de datos
+        // Si todas las validaciones pasan, actualizar la reserva.
         datosReservaPorMesa.put(idReserva, reservaActualizada);
         log.info("Reserva con ID " + idReserva + " actualizada correctamente.");
         return true;
@@ -240,6 +227,12 @@ public class ReservaService implements IReservaService {
         }
         return false; // No hay conflicto de horario
     }
+
+    /**
+     * Método existeReserva: Este boolean sirve para el put de controller que verifica si el id existe en la reserva.
+     * @param idReserva El id de la reserva
+     * @return El id de la reserva
+     */
     public static boolean existeReserva(Integer idReserva) {
         return datosReservaPorMesa.containsKey(idReserva);
     }
