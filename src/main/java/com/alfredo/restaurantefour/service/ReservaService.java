@@ -155,7 +155,7 @@ public class ReservaService implements IReservaService {
         }
 
         // Obtener la reserva antes de la actualización para verificar la mesa asociada y la capacidad actual
-        Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
+       // Reserva reservaAntesDeActualizar = datosReservaPorMesa.get(idReserva);
         Mesa mesaAsociada = datosDeMesa.get(mesaId);
         if (mesaAsociada == null) {
             // La mesa no existe, no se puede actualizar la reserva
@@ -163,13 +163,6 @@ public class ReservaService implements IReservaService {
             return false;
         }
         int capacidadMesa = mesaAsociada.getCapacidad();
-        /*if (mesaAsociada == null) {
-            // La mesa no existe, no se puede agregar la reserva
-            log.error("La mesa con el ID " + mesaId + " no existe. No se pudo agregar la reserva.");
-            return false;
-        }*/
-        //int capacidadMesa = mesaAsociada.getCapacidad();
-
         // Verificar número de comensales
         int numeroComensales = reservaActualizada.getNumeroComensales();
         if (numeroComensales < 1) {
