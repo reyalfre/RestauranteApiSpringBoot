@@ -21,6 +21,7 @@ public class ReservaController {
 
     /**
      * Método nuevaInformacionReserva: Crear una nueva reserva.
+     *
      * @param info
      * @return 201, 400
      */
@@ -54,8 +55,10 @@ public class ReservaController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     /**
      * Método todasReservas:  Listar todas las reservas.
+     *
      * @return 200 o 204
      */
     @Operation(
@@ -75,6 +78,7 @@ public class ReservaController {
 
     /**
      * Método getByReserva: Obtener detalles de una reserva específica.
+     *
      * @param id El id de la reserva.
      * @return 200 o 204
      */
@@ -93,7 +97,8 @@ public class ReservaController {
     }
 
     /**
-     *  Método actualizarReserva: Actualizar una reserva existente. Con los nuevos datos se modificará entera.
+     * Método actualizarReserva: Actualizar una reserva existente. Con los nuevos datos se modificará entera.
+     *
      * @param id
      * @param reserva
      * @return 200, 400, 404, 409
@@ -117,6 +122,7 @@ public class ReservaController {
 
     /**
      * Método eliminarPorReserva: Cancelar una reserva.
+     *
      * @param id El id de la reserva.
      * @return 204 o 404.
      */
@@ -137,6 +143,7 @@ public class ReservaController {
 
     /**
      * Método reservasDelDia: Obtener las reservas del día actual
+     *
      * @return Las reservas del día actual.
      */
     @Operation(
@@ -153,7 +160,6 @@ public class ReservaController {
             return new ResponseEntity<>(reservasHoy, HttpStatus.OK);
         }
     }
-
 
 
 }

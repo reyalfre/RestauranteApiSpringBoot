@@ -71,12 +71,12 @@ public class MesaController {
             summary = "Ver detalles de una mesa específica",
             description = "Obtiene los detalles de una mesa")
     @ApiResponse(responseCode = "200", description = "OK: Data content")
-    @ApiResponse(responseCode = "204", description = "No content")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     @GetMapping("{id}")
     public ResponseEntity<Mesa> getByMesa(@PathVariable Integer id) {
         Mesa mesa = mesaService.mesita(id);
         if (mesa == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(mesa, HttpStatus.OK);
     }
